@@ -9,6 +9,7 @@ import {
   IconButton,
   Grid,
   Spacer,
+  CloseButton,
 } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
@@ -58,13 +59,22 @@ export default function TodoList() {
                 type="text"
                 onInput={(e) => onInputEdit(e)}
               />
-              <IconButton
-                ml="5px"
-                colorScheme="green"
-                aria-label="Delete"
-                icon={<CheckIcon />}
-                onClick={() => onButtonSave(idx)}
-              />
+              <Flex>
+                <IconButton
+                  ml="5px"
+                  colorScheme="green"
+                  aria-label="Delete"
+                  icon={<CheckIcon />}
+                  onClick={() => onButtonSave(idx)}
+                />
+                <Button
+                  ml="5px"
+                  colorScheme="red"
+                  onClick={() => onCancelButton(idx)}
+                >
+                  X
+                </Button>
+              </Flex>
             </div>
           ) : (
             <Checkbox
@@ -112,7 +122,7 @@ export default function TodoList() {
   };
   const onEditTodo = (idx) => {
     let tempListTodo = listtodo;
-    tempListTodo[idx].isUserClickEdit = !tempListTodo[idx].isUserClickEdit;
+    tempListTodo[idx].isUserClickEdit = true;
     setListtodo([...tempListTodo]);
   };
   let inputEdit = "";
@@ -125,6 +135,11 @@ export default function TodoList() {
     editedList[idx].todo = inputEdit;
     editedList[idx].isUserClickEdit = false;
     setListtodo([...editedList]);
+  };
+  const onCancelButton = (idx) => {
+    let cancelList = listtodo;
+    cancelList[idx].isUserClickEdit = !cancelList[idx].isUserClickEdit;
+    setListtodo([...cancelList]);
   };
   const onChecked = (e, idx) => {
     let isChecked = e.target.checked;

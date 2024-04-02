@@ -10,7 +10,7 @@ import {
   Grid,
   Spacer,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 export default function TodoList() {
   const [listtodo, setListtodo] = useState([
@@ -58,7 +58,13 @@ export default function TodoList() {
                 type="text"
                 onInput={(e) => onInputEdit(e)}
               />
-              <button onClick={() => onButtonSave(idx)}>coba</button>
+              <IconButton
+                ml="5px"
+                colorScheme="green"
+                aria-label="Delete"
+                icon={<CheckIcon />}
+                onClick={() => onButtonSave(idx)}
+              />
             </div>
           ) : (
             <Checkbox

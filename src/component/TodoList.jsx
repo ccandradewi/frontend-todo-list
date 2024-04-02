@@ -11,23 +11,65 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import React, { useState } from "react";
+import { useState } from "react";
 export default function TodoList() {
   const [listtodo, setListtodo] = useState([
-    "Create Guest Experience mobile check-in",
-    "Document current CI/CD process",
-    "Perform Code Review for final Pillow-talk release",
-    "Implement new Color Pallete from Design Team",
-    " Fix image uploading process for guest check-in",
-    "Provide on boarding documentation",
+    {
+      todo: "Create Guest Experience mobile check-in",
+      isDone: false,
+      isUserClickEdit: false,
+    },
+    {
+      todo: "Document current CI/CD process",
+      isDone: false,
+      isUserClickEdit: false,
+    },
+    {
+      todo: "Perform Code Review for final Pillow-talk release",
+      isDone: false,
+      isUserClickEdit: false,
+    },
+    {
+      todo: "Implement new Color Pallete from Design Team",
+      isDone: false,
+      isUserClickEdit: false,
+    },
+    {
+      todo: " Fix image uploading process for guest check-in",
+      isDone: false,
+      isUserClickEdit: false,
+    },
+    {
+      todo: "Provide on boarding documentation",
+      isDone: false,
+      isUserClickEdit: false,
+    },
   ]);
   const renderList = () => {
     return listtodo.map((item, idx) => {
       return (
         <Flex key={idx}>
-          <Checkbox colorScheme="green" mr={5} ml={2}>
-            {item}
-          </Checkbox>
+          {item.isUserClickEdit === true ? (
+            <div>
+              <Input
+                maxWidth={80}
+                placeholder=""
+                margin="10px"
+                type="text"
+                onInput={(e) => onInputEdit(e)}
+              />
+              <button onClick={() => onButtonSave(idx)}>coba</button>
+            </div>
+          ) : (
+            <Checkbox
+              colorScheme="green"
+              mr={5}
+              ml={2}
+              onChange={(e) => onChecked(e, idx)}
+            >
+              <Text as={item.isDone ? "s" : ""}>{item.todo}</Text>
+            </Checkbox>
+          )}
           <Spacer />
           <IconButton
             ml="5px"
@@ -43,7 +85,7 @@ export default function TodoList() {
             colorScheme="blue"
             aria-label="Delete"
             icon={<EditIcon />}
-            onClick={() => onEditTodo()}
+            onClick={() => onEditTodo(idx)}
           />
         </Flex>
       );
@@ -62,6 +104,29 @@ export default function TodoList() {
     newTodo.splice(idx, 1);
     setListtodo(newTodo);
   };
+  const onEditTodo = (idx) => {
+    let tempListTodo = listtodo;
+    tempListTodo[idx].isUserClickEdit = !tempListTodo[idx].isUserClickEdit;
+    setListtodo([...tempListTodo]);
+  };
+  let inputEdit = "";
+  const onInputEdit = (e) => {
+    inputEdit = e.target.value;
+    console.log(inputEdit);
+  };
+  const onButtonSave = (idx) => {
+    let editedList = listtodo;
+    editedList[idx].todo = inputEdit;
+    editedList[idx].isUserClickEdit = false;
+    setListtodo([...editedList]);
+  };
+  const onChecked = (e, idx) => {
+    let isChecked = e.target.checked;
+    let completeList = listtodo;
+    completeList[idx].isDone = isChecked;
+    setListtodo([...completeList]);
+  };
+
   return (
     <Flex direction="column">
       <div className="up">
@@ -78,7 +143,7 @@ export default function TodoList() {
       </div>
       <Divider></Divider>
       <div className="down">
-        <h1>Done : {}</h1>
+        <h1>Done : {listtodo.filter((item) => item.isDone === true).length}</h1>
         <Flex direction="column" alignItems="center">
           <Text margin="10px"> Add todo </Text>
           <Input
@@ -93,7 +158,7 @@ export default function TodoList() {
             ml="10px"
             colorScheme="blue"
             variant="solid"
-            onClick={() => onButtonClick()}
+            onClick={onButtonClick}
           >
             ADD TASK
           </Button>

@@ -9,7 +9,6 @@ import {
   IconButton,
   Grid,
   Spacer,
-  CloseButton,
 } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
@@ -113,7 +112,12 @@ export default function TodoList() {
     console.log(inputUser);
   };
   const onButtonClick = () => {
-    setListtodo([inputUser, ...listtodo]);
+    const newData = {
+      todo: inputUser,
+      isDone: false,
+      isUserClickEdit: false,
+    };
+    setListtodo([newData, ...listtodo]);
   };
   const onDeleteClick = (idx) => {
     const newTodo = [...listtodo];
